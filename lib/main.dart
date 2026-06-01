@@ -39,7 +39,6 @@ class GameCard {
 
   GameCard({required this.type, required this.difficulty, required this.content, this.targetGender});
 
-  // Le calcul automatique : plus besoin de stocker la valeur !
   int get shots {
     switch (difficulty) {
       case 'SOFT': return 1;
@@ -51,7 +50,7 @@ class GameCard {
 }
 
 // --- BASE DE DONNÉES ---
-  final List<GameCard> allCards = [
+final List<GameCard> allCards = [
   // --- SOFT ---
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Fais le tour de la maison à cloche-pied.'),
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Imite ton animal préféré pendant 30 secondes.'),
@@ -63,6 +62,8 @@ class GameCard {
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Fais semblant de conduire une moto sur un circuit de course de manière ultra intense pendant 20 secondes.'),
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Raconte ta meilleure blague de papa (dad joke) en gardant un sérieux absolu.'),
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Laisse la personne à ta gauche te recoiffer exactement comme elle le souhaite.'),
+  GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Imite une pub pour un parfum pour homme avec ton regard le plus ténébreux et une voix grave.', targetGender: 'M'),
+  GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Fais un défilé de mode de 3 mètres dans la pièce avec ton meilleur regard "femme fatale".', targetGender: 'F'),
 
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'Combien de douches as-tu prises cette semaine ?'),
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'Quelle est la dernière chose que tu as cherchée sur Google ?'),
@@ -74,6 +75,8 @@ class GameCard {
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu encore un doudou ou une vieille peluche de ton enfance cachée quelque part chez toi ?'),
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu déjà pleuré devant un dessin animé ? Lequel ?'),
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'Quelle est la pire gaffe que tu aies faite devant tes parents ?'),
+  GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu déjà essayé de faire contracter tes pecs (ou tes abdos) devant un miroir juste pour voir si tu y arrivais ?', targetGender: 'M'),
+  GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu déjà fait semblant de ne pas savoir faire un truc simple (comme ouvrir un bocal) juste pour flatter l\'égo d\'un garçon ?', targetGender: 'F'),
 
   // --- FUN ---
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Envoie un SMS de drague à une personne de ton répertoire qui n\'est pas ton partenaire.'),
@@ -86,6 +89,8 @@ class GameCard {
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Explique comment on crée un site web, mais avec la voix la plus sensuelle et suave possible.'),
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Mime la pire technique de drague que tu aies jamais vue ou utilisée dans la vraie vie.'),
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Lance-toi dans un débat de 30 secondes pour expliquer pourquoi ton setup clavier/souris est supérieur, en utilisant des termes techniques totalement inventés.'),
+  GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Fais une fausse demande en mariage ultra dramatique et romantique à la fille de ton choix (utilise un objet absurde en guise de bague).', targetGender: 'M'),
+  GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Prends ton téléphone et montre aux autres comment tu te cambres ou quelle pose tu prends quand veux "le" selfie parfait.', targetGender: 'F'),
 
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Entre un(e) militant(e) d\'extrême gauche et un(e) militant(e) d\'extrême droite, avec qui passerais-tu la nuit si tu étais obligé(e) ?'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Qui dans la pièce a les opinions politiques ou sociales les plus éclatées/problématiques selon toi ?'),
@@ -94,9 +99,11 @@ class GameCard {
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Si tu devais faire l\'amour avec quelqu\'un qui a une tête d\'animal, tu choisirais quel animal ?'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Raconte la plus grande honte publique de ta vie.'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Quelle est la chose la plus illégale que tu aies faite ?'),
-  GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Si tu pouvais être invisible pendant 1 heure, que ferais-tu de totalement immoral ou absurde ?'),
+  GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Si tu pouvais être invisible pendant 1 heure, que ferais-tu de totally immoral ou absurde ?'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Quel est le pire tue-l\'amour chez un garçon selon toi ?', targetGender: 'F'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Quel est le pire tue-l\'amour chez une fille selon toi ?', targetGender: 'M'),
+  GameCard(type: 'VERITE', difficulty: 'FUN', content: 'As-tu déjà consciemment joué la carte du "mec sensible" ou "incompris" uniquement pour attendrir une fille ?', targetGender: 'M'),
+  GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Lequel des garçons de la pièce a le profil ou l\'attitude la plus "red flag" (drapeau rouge) selon toi, et pourquoi ?', targetGender: 'F'),
 
   // --- HOT ---
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Enlève un vêtement de ton choix.'),
@@ -109,6 +116,8 @@ class GameCard {
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Mime la position du missionnaire ou de la levrette avec un coussin de manière excessivement dramatique.'),
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Laisse le joueur de ton choix te donner une petite fessée.'),
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Lèche langoureusement ton propre doigt en regardant la personne de ton choix droit dans les yeux.'),
+  GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Embrasse très lentement et tendrement le dos de la main, puis le creux du poignet de la fille de ton choix.', targetGender: 'M'),
+  GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Assieds-toi à califourchon sur les genoux du garçon de ton choix et soutiens son regard en silence pendant 15 secondes.', targetGender: 'F'),
 
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'As-tu déjà fantasmé sur un(e) prof, un(e) collègue ou un(e) supérieur(e) ?'),
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Trouves-tu quelqu\'un du groupe particulièrement attirant sexuellement ? Qui ?'),
@@ -120,6 +129,8 @@ class GameCard {
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'As-tu déjà pensé à quelqu\'un d\'autre pendant que tu faisais l\'amour ?'),
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Quel est le lieu public le plus insolite ou risqué où tu as fait l\'amour ?'),
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Si tu devais tourner une sex-tape, quel serait le scénario, le décor ou ton rôle ?'),
+  GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Quelle est l\'initiative féminine au lit (ou pendant les préliminaires) qui te fait perdre le contrôle instantanément ?', targetGender: 'M'),
+  GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Quelle est la zone érogène de ton corps que les garçons oublient ou négligent beaucoup trop souvent selon toi ?', targetGender: 'F'),
 ];
 
 // ================= SETUP SCREEN =================
@@ -154,9 +165,26 @@ class _SetupScreenState extends State<SetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_currentIndex == 0 ? "Configuration Joueurs" : "Créer une carte")),
-      body: _currentIndex == 0 ? _buildPlayerSetup() : CreateCardScreen(onCardCreated: (c) => setState(() => _currentDeck.add(c))),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft, end: Alignment.bottomRight,
+            colors: [Color(0xFF050515), Color(0xFF1A1A40), Color(0xFF4B0082)],
+          ),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 50),
+            Text(_currentIndex == 0 ? "Truth Or Shot" : "Créer une carte", 
+                 style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.cyanAccent)),
+            Expanded(
+              child: _currentIndex == 0 ? _buildPlayerSetup() : CreateCardScreen(onCardCreated: (c) => setState(() => _currentDeck.add(c))),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
@@ -173,20 +201,63 @@ class _SetupScreenState extends State<SetupScreen> {
       child: Column(
         children: [
           Row(children: [
-            Expanded(child: GestureDetector(onTap: () => setState(() => _selectedGender = 'M'), child: Container(padding: const EdgeInsets.all(15), decoration: BoxDecoration(color: _selectedGender == 'M' ? Colors.blue : Colors.grey[800], borderRadius: BorderRadius.circular(10)), child: const Center(child: Text('👦 Garçon'))))),
+            // Utilisation des symboles ♂ et ♀
+            _genderButton('M', '♂ Garçon', Colors.blue),
             const SizedBox(width: 10),
-            Expanded(child: GestureDetector(onTap: () => setState(() => _selectedGender = 'F'), child: Container(padding: const EdgeInsets.all(15), decoration: BoxDecoration(color: _selectedGender == 'F' ? Colors.pink : Colors.grey[800], borderRadius: BorderRadius.circular(10)), child: const Center(child: Text('👧 Fille'))))),
+            _genderButton('F', '♀ Fille', Colors.pink),
           ]),
           const SizedBox(height: 20),
           Row(children: [
-            Expanded(child: TextField(controller: _nameController, decoration: const InputDecoration(hintText: 'Prénom...', filled: true))),
+            Expanded(child: TextField(controller: _nameController, decoration: const InputDecoration(hintText: 'Prénom...', filled: true, fillColor: Colors.white10))),
             IconButton(onPressed: _addPlayer, icon: const Icon(Icons.add_circle, size: 40, color: Colors.green)),
           ]),
-          Expanded(child: ListView.builder(itemCount: _players.length, itemBuilder: (context, i) => ListTile(title: Text(_players[i].name), trailing: IconButton(icon: const Icon(Icons.delete), onPressed: () => setState(() => _players.removeAt(i)))))),
-          if (_players.length >= 2) ElevatedButton(onPressed: _startGame, style: ElevatedButton.styleFrom(backgroundColor: Colors.green, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20)), child: const Text('JOUER 🚀', style: TextStyle(fontSize: 20))),
+          const SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _players.length,
+              itemBuilder: (context, i) => Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: Row(
+                  children: [
+                    // Remplacement de l'icône par le symbole coloré
+                    Text(
+                      _players[i].gender == 'M' ? '♂' : '♀', 
+                      style: TextStyle(
+                        fontSize: 22, 
+                        fontWeight: FontWeight.bold, 
+                        color: _players[i].gender == 'M' ? Colors.blue : Colors.pink
+                      )
+                    ),
+                    const SizedBox(width: 10),
+                    Text(_players[i].name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    IconButton(icon: const Icon(Icons.delete, color: Colors.redAccent), onPressed: () => setState(() => _players.removeAt(i))),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (_players.length >= 2) ElevatedButton(
+            onPressed: _startGame,
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.cyanAccent, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
+            child: const Text('JOUER 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
         ],
       ),
     );
+  }
+
+  Widget _genderButton(String g, String label, Color color) {
+    return Expanded(child: GestureDetector(
+      onTap: () => setState(() => _selectedGender = g),
+      child: Container(padding: const EdgeInsets.all(15), decoration: BoxDecoration(color: _selectedGender == g ? color : Colors.white10, borderRadius: BorderRadius.circular(10)), child: Center(child: Text(label))),
+    ));
   }
 }
 
@@ -200,16 +271,19 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateMixin {
+class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   int _currentPlayerIndex = 0;
   String? _chosenType;
   GameCard? _currentCard;
   final List<GameCard> _hiddenCards = [];
   final List<GameCard> _playedCards = [];
-  
+  bool _isTransitioning = false; 
+
   Offset _swipeOffset = Offset.zero;
   bool _isDragging = false;
+  
   late AnimationController _drawController;
+  late AnimationController _dealController;
   late Animation<double> _flipAnimation, _scaleAnimation;
   late Animation<Offset> _slideAnimation;
 
@@ -217,6 +291,8 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     _drawController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _dealController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+
     _flipAnimation = Tween<double>(begin: 0, end: pi).animate(CurvedAnimation(parent: _drawController, curve: Curves.easeInOut));
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(CurvedAnimation(parent: _drawController, curve: Curves.elasticOut));
     _slideAnimation = Tween<Offset>(begin: const Offset(0, 1.5), end: Offset.zero).animate(CurvedAnimation(parent: _drawController, curve: Curves.easeOutQuart));
@@ -224,10 +300,15 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
   void _nextTurn() {
     setState(() {
-      _currentPlayerIndex = (_currentPlayerIndex + 1) % widget.players.length;
-      _chosenType = null;
+      _isTransitioning = true;
       _currentCard = null;
+      _chosenType = null;
       _swipeOffset = Offset.zero;
+      _currentPlayerIndex = (_currentPlayerIndex + 1) % widget.players.length;
+    });
+
+    Future.delayed(const Duration(milliseconds: 1000), () { // Transition réduite à 1.5s
+      if (mounted) setState(() => _isTransitioning = false);
     });
   }
 
@@ -256,7 +337,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final currentPlayer = widget.players[_currentPlayerIndex];
@@ -266,25 +347,76 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     return Scaffold(
       body: Stack(
         children: [
-          Container(decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/tapis.jpg'), fit: BoxFit.cover))),
-          Container(color: Colors.black.withValues(alpha: 0.6)),
-          if (_currentCard != null) ...[
+          Container(decoration: const BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft,end: Alignment.bottomRight,colors: [Color.fromARGB(255, 119, 0, 187), Color(0xFF1A1A40),  Color.fromARGB(255, 0, 195, 255), ],stops: [0.0, 0.5, 1.0],),),), 
+          Container(color: Colors.black.withValues(alpha: 0.3)),
+          
+          if (_currentCard != null && !_isTransitioning) ...[
             IgnorePointer(child: Container(color: Colors.green.withValues(alpha: valuesFait * 0.8), alignment: Alignment.center, child: valuesFait > 0.1 ? Transform.rotate(angle: -0.2, child: const Text("FAIT ! 😎", style: TextStyle(fontSize: 60, fontWeight: FontWeight.w900, color: Colors.white))) : null)),
             IgnorePointer(child: Container(color: Colors.red.withValues(alpha: valuesRefuse * 0.8), alignment: Alignment.center, child: valuesRefuse > 0.1 ? Transform.rotate(angle: 0.2, child: const Text("REFUSÉ ! 🥴", style: TextStyle(fontSize: 60, fontWeight: FontWeight.w900, color: Colors.white))) : null)),
           ],
-          SafeArea(
-            child: Column(
-              children: [
-                Align(alignment: Alignment.topLeft, child: IconButton(icon: const Icon(Icons.home, size: 32, color: Colors.white70), onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SetupScreen())))),
-                const Text("C'est au tour de", style: TextStyle(fontSize: 20, color: Colors.white70)),
-                Text(currentPlayer.name, style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: currentPlayer.gender == 'M' ? Colors.blue : Colors.pink)),
-                Text("Gorgées : ${currentPlayer.score} 🍺", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
-                const Spacer(),
-                if (_currentCard != null) _buildSwipeableCard()
-                else if (_chosenType != null) _buildDifficultySelection()
-                else _buildActionTruthSelection(),
-                const Spacer(),
-              ],
+          
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 600),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: ScaleTransition(scale: Tween<double>(begin: 0.9, end: 1.0).animate(animation), child: child));
+            },
+            child: _isTransitioning ? _buildTransitionScreen(currentPlayer) : _buildMainGameArea(currentPlayer),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransitionScreen(Player currentPlayer) {
+    return Center(
+      key: const ValueKey('TransitionScreen'),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("🔥 PRÉPARE-TOI 🔥", style: TextStyle(fontSize: 24, color: Colors.white70, letterSpacing: 4)),
+          const SizedBox(height: 20),
+          Text(currentPlayer.name.toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 60, fontWeight: FontWeight.w900, color: currentPlayer.gender == 'M' ? Colors.cyanAccent : Colors.pinkAccent, shadows: [Shadow(color: currentPlayer.gender == 'M' ? Colors.cyan : Colors.pink, blurRadius: 20), Shadow(color: currentPlayer.gender == 'M' ? Colors.blue : Colors.purple, blurRadius: 40)])),
+          const SizedBox(height: 20),
+          const Text("C'est à ton tour de jouer...", style: TextStyle(fontSize: 20, color: Colors.white54, fontStyle: FontStyle.italic)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMainGameArea(Player currentPlayer) {
+    return SafeArea(
+      key: const ValueKey('GameScreen'),
+      child: Column(
+        children: [
+          Align(alignment: Alignment.topLeft, child: IconButton(icon: const Icon(Icons.home, size: 32, color: Colors.white70), onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SetupScreen())))),
+          const Text("C'est au tour de", style: TextStyle(fontSize: 20, color: Colors.white70)),
+          Text(currentPlayer.name, style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: currentPlayer.gender == 'M' ? Colors.blue : Colors.pink)),
+          Text("Gorgées : ${currentPlayer.score} 🍺", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+          
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: _chosenType == null
+                  ? _buildActionTruthSelection()
+                  : Stack(
+                      key: const ValueKey('TapisArea'),
+                      alignment: Alignment.center, 
+                      clipBehavior: Clip.none,    
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.43,
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(color: Colors.white24, width: 2),
+                            boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, spreadRadius: 5)],
+                            image: const DecorationImage(image: AssetImage('assets/tapis.jpg'), fit: BoxFit.cover),
+                          ),
+                        ),
+                        if (_currentCard != null) _buildSwipeableCard()
+                        else _buildDifficultySelection(),
+                      ],
+                    ),
             ),
           ),
         ],
@@ -334,52 +466,167 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildCardFront() {
-    return Container(
-      width: 300, height: 450, padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: _currentCard!.difficulty == 'SOFT' ? Colors.green : _currentCard!.difficulty == 'FUN' ? Colors.orange : Colors.red, width: 15), boxShadow: const [BoxShadow(color: Colors.black45, blurRadius: 20, spreadRadius: 2)]),
-      child: Stack(children: [
-        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("${_currentCard!.type} • ${_currentCard!.difficulty}", style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 20),
-          Text(_currentCard!.content, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)),
-          const SizedBox(height: 30),
-          Text("Pénalité : ${_currentCard!.shots} 🍺", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.pinkAccent)),
-          const Spacer(),
-          const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("👈 Fait", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)), Text("Refusé 👉", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold))]),
-        ]),
-        Positioned(right: 0, top: 0, child: IconButton(icon: const Icon(Icons.thumb_down, color: Colors.grey), onPressed: () => setState(() { _hiddenCards.add(_currentCard!); _nextTurn(); }))),
-      ]),
-    );
-  }
+  // Définition des couleurs néon selon la difficulté
+  Color accentColor = _currentCard!.difficulty == 'SOFT'
+      ? Colors.greenAccent
+      : _currentCard!.difficulty == 'FUN'
+          ? Colors.orangeAccent
+          : Colors.redAccent;
+
+  return Container(
+    width: 300,
+    height: 450,
+    padding: const EdgeInsets.all(25),
+    decoration: BoxDecoration(
+      // Fond sombre légèrement transparent pour un effet verre
+      color: const Color(0xFF050515).withValues(alpha: 0.9),
+      borderRadius: BorderRadius.circular(20),
+      // Bordure fine néon
+      border: Border.all(color: accentColor.withValues(alpha: 0.6), width: 2),
+      // Lueur autour de la carte (Neon Glow)
+      boxShadow: [
+        BoxShadow(
+          color: accentColor.withValues(alpha: 0.3),
+          blurRadius: 20,
+          spreadRadius: 2,
+        ),
+      ],
+    ),
+    child: Stack(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Titre avec la couleur néon
+            Text(
+              "${_currentCard!.type} • ${_currentCard!.difficulty}",
+              style: TextStyle(
+                color: accentColor, 
+                fontWeight: FontWeight.bold, 
+                letterSpacing: 1.5
+              ),
+            ),
+            const SizedBox(height: 30),
+            // Texte principal en blanc lisible
+            Text(
+              _currentCard!.content,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+                height: 1.4,
+              ),
+            ),
+            const Spacer(),
+            // Pénalité avec petite lueur
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white10,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                "Pénalité : ${_currentCard!.shots} 🍺",
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Instructions de swipe (très discrètes)
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("👈 Fait", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
+                Text("Refusé 👉", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
+              ],
+            )
+          ],
+        ),
+        // Bouton Banni (plus subtil)
+        Positioned(
+          right: -10,
+          top: -10,
+          child: IconButton(
+            icon: const Icon(Icons.thumb_down, color: Colors.redAccent), 
+            onPressed: () => setState(() {
+              _hiddenCards.add(_currentCard!);
+              _nextTurn();
+            }),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildCardBack(String imagePath) {
     return Container(width: 300, height: 450, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: const [BoxShadow(color: Colors.black45, blurRadius: 20, spreadRadius: 2)], image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover)));
   }
 
   Widget _buildDifficultySelection() {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      _diffButton('SOFT', 'SOFT 🟢', 'assets/card_green.png'),
-      _diffButton('FUN', 'FUN 🟠', 'assets/card_orange.png'),
-      _diffButton('HOT', 'HOT 🔴', 'assets/card_red.png'),
-    ]);
-  }
-
-  Widget _diffButton(String difficulty, String displayTitle, String imagePath) {
-    return GestureDetector(
-      onTap: () => _drawCard(difficulty),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Container(width: 100, height: 150, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.grey.shade800, width: 3), image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover))),
-        const SizedBox(height: 12), Text(displayTitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
-      ]),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildDealtDifficultyCard('SOFT', 'assets/card_green.png', 0.0),
+        _buildDealtDifficultyCard('FUN', 'assets/card_orange.png', 0.2),
+        _buildDealtDifficultyCard('HOT', 'assets/card_red.png', 0.4),
+      ],
     );
   }
 
+  // L'animation "Distribution de carte du croupier"
+  Widget _buildDealtDifficultyCard(String difficulty, String imagePath, double delay) {
+  Animation<Offset> slide = Tween<Offset>(begin: const Offset(0, 2.0), end: Offset.zero).animate(
+    CurvedAnimation(parent: _dealController, curve: Interval(delay, 1.0, curve: Curves.easeOutBack)),
+  );
+
+  return SlideTransition(
+    position: slide,
+    child: GestureDetector(
+      onTap: () => _drawCard(difficulty),
+      child: Container(
+        width: 110, height: 165, 
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover),
+          boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 10, offset: const Offset(0, 5))],
+        ),
+      ),
+    ),
+  );
+}
+
   Widget _buildActionTruthSelection() {
-    return Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: Row(children: [
-      Expanded(child: ElevatedButton(onPressed: () => setState(() => _chosenType = 'ACTION'), style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20)), child: const Text('ACTION'))),
-      const SizedBox(width: 20),
-      Expanded(child: ElevatedButton(onPressed: () => setState(() => _chosenType = 'VERITE'), style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20)), child: const Text('VÉRITÉ'))),
-    ]));
+    return Padding(
+      key: const ValueKey('ActionTruthButtons'),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() => _chosenType = 'ACTION');
+                _dealController.forward(from: 0.0); // Déclenche la distribution des cartes !
+              }, 
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFF00E5FF).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFF00E5FF), width: 2), ), 
+              child: const Text('ACTION', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            )
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() => _chosenType = 'VERITE');
+                _dealController.forward(from: 0.0); // Déclenche la distribution des cartes !
+              }, 
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFFD500F9).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFFD500F9), width: 2), ), 
+              child: const Text('VÉRITÉ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            )
+          ),
+        ],
+      ),
+    );
   }
 }
 
