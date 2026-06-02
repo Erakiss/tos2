@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+// ============================================================================
+// MAIN ENTRY POINT
+// Initializes and runs the Truth Or Shot application.
+// ============================================================================
 void main() {
   runApp(const TruthOrShotApp());
 }
 
+// region --- APP ROOT WIDGET ---
+// Root widget setting up the global theme (Neon/Dark) and initial screen.
 class TruthOrShotApp extends StatelessWidget {
   const TruthOrShotApp({super.key});
 
@@ -22,8 +28,15 @@ class TruthOrShotApp extends StatelessWidget {
     );
   }
 }
+// endregion
 
-// --- MODÈLES ---
+// ============================================================================
+// MODELS
+// Data structures representing core game entities.
+// ============================================================================
+// region --- MODELS ---
+
+// Represents a game participant with their current score.
 class Player {
   String name;
   String gender;
@@ -31,6 +44,7 @@ class Player {
   Player({required this.name, required this.gender, this.score = 0});
 }
 
+// Represents a playable card (Action/Truth) with dynamic penalty calculation.
 class GameCard {
   final String type;
   final String difficulty;
@@ -39,6 +53,7 @@ class GameCard {
 
   GameCard({required this.type, required this.difficulty, required this.content, this.targetGender});
 
+  // Dynamically calculates penalty shots based on difficulty level.
   int get shots {
     switch (difficulty) {
       case 'SOFT': return 1;
@@ -48,10 +63,14 @@ class GameCard {
     }
   }
 }
+// endregion
 
-// --- BASE DE DONNÉES ---
+// ============================================================================
+// DATABASE (MOCK DATA)
+// Pre-defined list of game cards categorized by difficulty and type.
+// ============================================================================
+// region --- ALL CARDS LIST ---
 final List<GameCard> allCards = [
-  // --- SOFT ---
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Fais le tour de la maison à cloche-pied.'),
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Imite ton animal préféré pendant 30 secondes.'),
   GameCard(type: 'ACTION', difficulty: 'SOFT', content: 'Chante le refrain d\'une chanson de Disney de toutes tes forces.'),
@@ -78,7 +97,6 @@ final List<GameCard> allCards = [
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu déjà essayé de faire contracter tes pecs (ou tes abdos) devant un miroir juste pour voir si tu y arrivais ?', targetGender: 'M'),
   GameCard(type: 'VERITE', difficulty: 'SOFT', content: 'As-tu déjà fait semblant de ne pas savoir faire un truc simple (comme ouvrir un bocal) juste pour flatter l\'égo d\'un garçon ?', targetGender: 'F'),
 
-  // --- FUN ---
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Envoie un SMS de drague à une personne de ton répertoire qui n\'est pas ton partenaire.'),
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Imite l\'accent d\'un étranger jusqu\'à ton prochain tour.'),
   GameCard(type: 'ACTION', difficulty: 'FUN', content: 'Laisse le joueur à ta droite poster une story sur ton Instagram.'),
@@ -105,7 +123,6 @@ final List<GameCard> allCards = [
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'As-tu déjà consciemment joué la carte du "mec sensible" ou "incompris" uniquement pour attendrir une fille ?', targetGender: 'M'),
   GameCard(type: 'VERITE', difficulty: 'FUN', content: 'Lequel des garçons de la pièce a le profil ou l\'attitude la plus "red flag" (drapeau rouge) selon toi, et pourquoi ?', targetGender: 'F'),
 
-  // --- HOT ---
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Enlève un vêtement de ton choix.'),
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Fais un massage des épaules et de la nuque de 30 secondes au joueur à ta gauche.'),
   GameCard(type: 'ACTION', difficulty: 'HOT', content: 'Choisis un joueur et laisse-le te faire un bisou sur la joue ou dans le cou.'),
@@ -132,8 +149,15 @@ final List<GameCard> allCards = [
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Quelle est l\'initiative féminine au lit (ou pendant les préliminaires) qui te fait perdre le contrôle instantanément ?', targetGender: 'M'),
   GameCard(type: 'VERITE', difficulty: 'HOT', content: 'Quelle est la zone érogène de ton corps que les garçons oublient ou négligent beaucoup trop souvent selon toi ?', targetGender: 'F'),
 ];
+// endregion
 
-// ================= SETUP SCREEN =================
+
+// ============================================================================
+// SETUP SCREEN
+// Initial interface to configure players and match duration.
+// ============================================================================
+// region --- SETUP SCREEN WIDGET ---
+
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
   @override
@@ -141,12 +165,17 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
+  // --- State Variables ---
   int _currentIndex = 0;
   final List<GameCard> _currentDeck = List.from(allCards);
   final List<Player> _players = [];
   final TextEditingController _nameController = TextEditingController();
   String _selectedGender = 'M';
+  double _selectedTurns = 20;
 
+  // --- Logic Methods ---
+  
+  // Adds a new player to the game roster
   void _addPlayer() {
     if (_nameController.text.trim().isNotEmpty) {
       setState(() {
@@ -156,12 +185,21 @@ class _SetupScreenState extends State<SetupScreen> {
     }
   }
 
+  // Resets scores and launches the main GameScreen
   void _startGame() {
     if (_players.length >= 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GameScreen(players: _players, deck: _currentDeck)));
+      for (var player in _players) {
+        player.score = 0;
+      }
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => GameScreen(players: _players, deck: _currentDeck, maxTurns: _selectedTurns.toInt())
+      ));
     }
   }
 
+  // --- Build Methods ---
+  
+  // Main build for SetupScreen scaffolding and navigation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,13 +233,13 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
+  // Builds the player creation list and game settings slider
   Widget _buildPlayerSetup() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
           Row(children: [
-            // Utilisation des symboles ♂ et ♀
             _genderButton('M', '♂ Garçon', Colors.blue),
             const SizedBox(width: 10),
             _genderButton('F', '♀ Fille', Colors.pink),
@@ -225,15 +263,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
                 child: Row(
                   children: [
-                    // Remplacement de l'icône par le symbole coloré
-                    Text(
-                      _players[i].gender == 'M' ? '♂' : '♀', 
-                      style: TextStyle(
-                        fontSize: 22, 
-                        fontWeight: FontWeight.bold, 
-                        color: _players[i].gender == 'M' ? Colors.blue : Colors.pink
-                      )
-                    ),
+                    Text(_players[i].gender == 'M' ? '♂' : '♀', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: _players[i].gender == 'M' ? Colors.blue : Colors.pink)),
                     const SizedBox(width: 10),
                     Text(_players[i].name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
@@ -243,16 +273,39 @@ class _SetupScreenState extends State<SetupScreen> {
               ),
             ),
           ),
-          if (_players.length >= 2) ElevatedButton(
-            onPressed: _startGame,
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.cyanAccent, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
-            child: const Text('JOUER 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ),
+          
+          if (_players.length >= 2) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(15)),
+              child: Column(
+                children: [
+                  Text("Durée de la partie : ${_selectedTurns.toInt()} tours", style: const TextStyle(color: Colors.cyanAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Slider(
+                    value: _selectedTurns,
+                    min: 5,
+                    max: 50,
+                    divisions: 9, 
+                    activeColor: Colors.cyanAccent,
+                    inactiveColor: Colors.white24,
+                    onChanged: (val) => setState(() => _selectedTurns = val),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: _startGame,
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.cyanAccent, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
+              child: const Text('JOUER 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
+          ]
         ],
       ),
     );
   }
 
+  // Helper widget for gender selection styling
   Widget _genderButton(String g, String label, Color color) {
     return Expanded(child: GestureDetector(
       onTap: () => setState(() => _selectedGender = g),
@@ -260,33 +313,45 @@ class _SetupScreenState extends State<SetupScreen> {
     ));
   }
 }
+// endregion
 
-// ================= GAME SCREEN =================
+
+// ============================================================================
+// GAME SCREEN
+// Core gameplay loop, turn management, and card animations.
+// ============================================================================
+// region --- GAME SCREEN WIDGET ---
+
 class GameScreen extends StatefulWidget {
   final List<Player> players;
   final List<GameCard> deck;
-  const GameScreen({super.key, required this.players, required this.deck});
+  final int maxTurns; 
+
+  const GameScreen({super.key, required this.players, required this.deck, required this.maxTurns});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
+  // --- State Variables ---
   int _currentPlayerIndex = 0;
+  int _currentTurnCount = 1;
   String? _chosenType;
   GameCard? _currentCard;
   final List<GameCard> _hiddenCards = [];
   final List<GameCard> _playedCards = [];
   bool _isTransitioning = false; 
 
+  // --- Animation Controllers ---
   Offset _swipeOffset = Offset.zero;
   bool _isDragging = false;
-  
   late AnimationController _drawController;
   late AnimationController _dealController;
   late Animation<double> _flipAnimation, _scaleAnimation;
   late Animation<Offset> _slideAnimation;
 
+  // Initializes controllers and animation curves
   @override
   void initState() {
     super.initState();
@@ -298,26 +363,43 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     _slideAnimation = Tween<Offset>(begin: const Offset(0, 1.5), end: Offset.zero).animate(CurvedAnimation(parent: _drawController, curve: Curves.easeOutQuart));
   }
 
+  // --- Game Logic Methods ---
+
+  // Advances to the next player, increments round if necessary, or ends game
   void _nextTurn() {
     setState(() {
       _isTransitioning = true;
       _currentCard = null;
       _chosenType = null;
       _swipeOffset = Offset.zero;
+      
       _currentPlayerIndex = (_currentPlayerIndex + 1) % widget.players.length;
+      
+      if (_currentPlayerIndex == 0) {
+        _currentTurnCount++;
+      }
     });
 
-    Future.delayed(const Duration(milliseconds: 1000), () { // Transition réduite à 1.5s
+    if (_currentTurnCount > widget.maxTurns) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ScoreBoardScreen(players: widget.players)));
+      return;
+    }
+
+    Future.delayed(const Duration(milliseconds: 1000), () {
       if (mounted) setState(() => _isTransitioning = false);
     });
   }
 
+  // Handles successful completion of a card (no penalty)
   void _handleSuccess() => _nextTurn();
+  
+  // Handles refusal of a card (adds penalty shots to player score)
   void _handleFail() {
     setState(() => widget.players[_currentPlayerIndex].score += _currentCard!.shots);
     _nextTurn();
   }
 
+  // Randomly draws a card based on chosen type, difficulty, and player gender
   void _drawCard(String difficulty) {
     final player = widget.players[_currentPlayerIndex];
     final allCategoryCards = widget.deck.where((c) => c.type == _chosenType && c.difficulty == difficulty && (c.targetGender == null || c.targetGender == player.gender) && !_hiddenCards.contains(c)).toList();
@@ -338,6 +420,9 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     }
   }
 
+  // --- Build Methods ---
+
+  // Main UI build handling background, swipe overlays, and the game/transition switcher
   @override
   Widget build(BuildContext context) {
     final currentPlayer = widget.players[_currentPlayerIndex];
@@ -356,7 +441,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           ],
           
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 400),
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(opacity: animation, child: ScaleTransition(scale: Tween<double>(begin: 0.9, end: 1.0).animate(animation), child: child));
             },
@@ -367,6 +452,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Renders the glowing text transition shown between player turns
   Widget _buildTransitionScreen(Player currentPlayer) {
     return Center(
       key: const ValueKey('TransitionScreen'),
@@ -383,12 +469,27 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Renders the main table layout including turn info, table mat, and action area
   Widget _buildMainGameArea(Player currentPlayer) {
     return SafeArea(
       key: const ValueKey('GameScreen'),
       child: Column(
         children: [
-          Align(alignment: Alignment.topLeft, child: IconButton(icon: const Icon(Icons.home, size: 32, color: Colors.white70), onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SetupScreen())))),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(icon: const Icon(Icons.home, size: 32, color: Colors.white70), onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SetupScreen()))),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white24)),
+                  child: Text("Tour $_currentTurnCount / ${widget.maxTurns}", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.cyanAccent)),
+                ),
+              ],
+            ),
+          ),
+
           const Text("C'est au tour de", style: TextStyle(fontSize: 20, color: Colors.white70)),
           Text(currentPlayer.name, style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: currentPlayer.gender == 'M' ? Colors.blue : Colors.pink)),
           Text("Gorgées : ${currentPlayer.score} 🍺", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
@@ -424,6 +525,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Renders the drawn card with 3D flip and swipe gestures built-in
   Widget _buildSwipeableCard() {
     return AnimatedBuilder(
       animation: _drawController,
@@ -444,9 +546,9 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               onPanUpdate: _drawController.isAnimating ? null : (d) => setState(() => _swipeOffset += d.delta),
               onPanEnd: _drawController.isAnimating ? null : (d) {
                 setState(() => _isDragging = false);
-                if (_swipeOffset.dx < -120) _handleSuccess();
-                else if (_swipeOffset.dx > 120) _handleFail();
-                else _swipeOffset = Offset.zero;
+                if (_swipeOffset.dx < -120) {_handleSuccess();}
+                else if (_swipeOffset.dx > 120) {_handleFail();}
+                else {_swipeOffset = Offset.zero;}
               },
               child: AnimatedContainer(
                 duration: _isDragging ? Duration.zero : const Duration(milliseconds: 400),
@@ -465,104 +567,60 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Renders the readable front face of the card (neon borders and text)
   Widget _buildCardFront() {
-  // Définition des couleurs néon selon la difficulté
-  Color accentColor = _currentCard!.difficulty == 'SOFT'
-      ? Colors.greenAccent
-      : _currentCard!.difficulty == 'FUN'
-          ? Colors.orangeAccent
-          : Colors.redAccent;
+    Color accentColor = _currentCard!.difficulty == 'SOFT' ? Colors.greenAccent : _currentCard!.difficulty == 'FUN' ? Colors.orangeAccent : Colors.redAccent;
 
-  return Container(
-    width: 300,
-    height: 450,
-    padding: const EdgeInsets.all(25),
-    decoration: BoxDecoration(
-      // Fond sombre légèrement transparent pour un effet verre
-      color: const Color(0xFF050515).withValues(alpha: 0.9),
-      borderRadius: BorderRadius.circular(20),
-      // Bordure fine néon
-      border: Border.all(color: accentColor.withValues(alpha: 0.6), width: 2),
-      // Lueur autour de la carte (Neon Glow)
-      boxShadow: [
-        BoxShadow(
-          color: accentColor.withValues(alpha: 0.3),
-          blurRadius: 20,
-          spreadRadius: 2,
-        ),
-      ],
-    ),
-    child: Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Titre avec la couleur néon
-            Text(
-              "${_currentCard!.type} • ${_currentCard!.difficulty}",
-              style: TextStyle(
-                color: accentColor, 
-                fontWeight: FontWeight.bold, 
-                letterSpacing: 1.5
+    return Container(
+      width: 300,
+      height: 450,
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: const Color(0xFF050515).withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: accentColor.withValues(alpha: 0.6), width: 2),
+        boxShadow: [BoxShadow(color: accentColor.withValues(alpha: 0.3), blurRadius: 20, spreadRadius: 2)],
+      ),
+      child: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("${_currentCard!.type} • ${_currentCard!.difficulty}", style: TextStyle(color: accentColor, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const SizedBox(height: 30),
+              Text(_currentCard!.content, textAlign: TextAlign.center, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white, height: 1.4)),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(10)),
+                child: Text("Pénalité : ${_currentCard!.shots} 🍺", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
-            ),
-            const SizedBox(height: 30),
-            // Texte principal en blanc lisible
-            Text(
-              _currentCard!.content,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-                height: 1.4,
-              ),
-            ),
-            const Spacer(),
-            // Pénalité avec petite lueur
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white10,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                "Pénalité : ${_currentCard!.shots} 🍺",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Instructions de swipe (très discrètes)
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("👈 Fait", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
-                Text("Refusé 👉", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
-              ],
-            )
-          ],
-        ),
-        // Bouton Banni (plus subtil)
-        Positioned(
-          right: -10,
-          top: -10,
-          child: IconButton(
-            icon: const Icon(Icons.thumb_down, color: Colors.redAccent), 
-            onPressed: () => setState(() {
-              _hiddenCards.add(_currentCard!);
-              _nextTurn();
-            }),
+              const SizedBox(height: 20),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("👈 Fait", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
+                  Text("Refusé 👉", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
+                ],
+              )
+            ],
           ),
-        ),
-      ],
-    ),
-  );
-}
+          Positioned(
+            right: -10,
+            top: -10,
+            child: IconButton(icon: const Icon(Icons.thumb_down, color: Colors.redAccent), onPressed: () => setState(() { _hiddenCards.add(_currentCard!); _nextTurn(); })),
+          ),
+        ],
+      ),
+    );
+  }
 
+  // Renders the image-based back face of the card
   Widget _buildCardBack(String imagePath) {
     return Container(width: 300, height: 450, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: const [BoxShadow(color: Colors.black45, blurRadius: 20, spreadRadius: 2)], image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover)));
   }
 
+  // Renders the 3 difficulty decks distributed by the virtual dealer
   Widget _buildDifficultySelection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -574,28 +632,22 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     );
   }
 
-  // L'animation "Distribution de carte du croupier"
+  // Animated sub-widget representing a single deck sliding onto the table
   Widget _buildDealtDifficultyCard(String difficulty, String imagePath, double delay) {
-  Animation<Offset> slide = Tween<Offset>(begin: const Offset(0, 2.0), end: Offset.zero).animate(
-    CurvedAnimation(parent: _dealController, curve: Interval(delay, 1.0, curve: Curves.easeOutBack)),
-  );
-
-  return SlideTransition(
-    position: slide,
-    child: GestureDetector(
-      onTap: () => _drawCard(difficulty),
-      child: Container(
-        width: 110, height: 165, 
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover),
-          boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 10, offset: const Offset(0, 5))],
+    Animation<Offset> slide = Tween<Offset>(begin: const Offset(0, 2.0), end: Offset.zero).animate(CurvedAnimation(parent: _dealController, curve: Interval(delay, 1.0, curve: Curves.easeOutBack)));
+    return SlideTransition(
+      position: slide,
+      child: GestureDetector(
+        onTap: () => _drawCard(difficulty),
+        child: Container(
+          width: 110, height: 165, 
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover), boxShadow: const [BoxShadow(color: Colors.black45, blurRadius: 10, offset: Offset(0, 5))]),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
+  // Initial choice buttons appearing at the very beginning of a player's turn
   Widget _buildActionTruthSelection() {
     return Padding(
       key: const ValueKey('ActionTruthButtons'),
@@ -603,34 +655,140 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() => _chosenType = 'ACTION');
-                _dealController.forward(from: 0.0); // Déclenche la distribution des cartes !
-              }, 
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFF00E5FF).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFF00E5FF), width: 2), ), 
-              child: const Text('ACTION', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-            )
-          ),
+          Expanded(child: ElevatedButton(onPressed: () { setState(() => _chosenType = 'ACTION'); _dealController.forward(from: 0.0); }, style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFF00E5FF).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFF00E5FF), width: 2), ), child: const Text('ACTION', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))),
           const SizedBox(width: 20),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() => _chosenType = 'VERITE');
-                _dealController.forward(from: 0.0); // Déclenche la distribution des cartes !
-              }, 
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFFD500F9).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFFD500F9), width: 2), ), 
-              child: const Text('VÉRITÉ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-            )
-          ),
+          Expanded(child: ElevatedButton(onPressed: () { setState(() => _chosenType = 'VERITE'); _dealController.forward(from: 0.0); }, style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20),backgroundColor: const Color(0xFFD500F9).withValues(alpha: 0.2), side: const BorderSide(color: Color(0xFFD500F9), width: 2), ), child: const Text('VÉRITÉ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))),
         ],
       ),
     );
   }
 }
+// endregion
 
-// ================= CREATE CARD SCREEN =================
+
+// ============================================================================
+// SCOREBOARD SCREEN
+// Final screen displaying the ranking, penalties, and funny titles.
+// ============================================================================
+// region --- SCOREBOARD SCREEN WIDGET ---
+class ScoreBoardScreen extends StatelessWidget {
+  final List<Player> players;
+  const ScoreBoardScreen({super.key, required this.players});
+
+  // --- Logic Method ---
+  
+  // Generates a funny title based on the player's ranking and total shots
+  String _getPlayerTitle(int rank, int score, int totalPlayers) {
+    if (score == 0) return "L'Ange 😇 (Même pas soif)";
+    if (rank == 0) {
+      if (score >= 15) return "L'Éponge Légendaire 🧽";
+      return "Le Pilier de Bar 🍺";
+    }
+    if (rank == totalPlayers - 1) {
+      return "Le Sam (Capitaine de soirée) 🚗";
+    }
+    if (score <= 3) return "L'Esquiveur 🥷";
+    if (score <= 8) return "Vitesse de Croisière 🛥️";
+    return "Bien Chaud 🔥";
+  }
+
+  // --- Build Method ---
+  
+  // Renders the final podium UI and replay button
+  @override
+  Widget build(BuildContext context) {
+    final sortedPlayers = List<Player>.from(players)..sort((a, b) => b.score.compareTo(a.score));
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft, end: Alignment.bottomRight,
+            colors: [Color(0xFF050515), Color(0xFF1A1A40), Color(0xFF4B0082)],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              const Text("🏆 FIN DE PARTIE 🏆", style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: Colors.cyanAccent, shadows: [Shadow(color: Colors.cyan, blurRadius: 15)])),
+              const SizedBox(height: 10),
+              const Text("Qui a pris le plus cher ce soir ?", style: TextStyle(fontSize: 18, color: Colors.white70, fontStyle: FontStyle.italic)),
+              const SizedBox(height: 40),
+              
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ListView.builder(
+                    itemCount: sortedPlayers.length,
+                    itemBuilder: (context, i) {
+                      final player = sortedPlayers[i];
+                      final isFirst = i == 0;
+                      final String playerTitle = _getPlayerTitle(i, player.score, sortedPlayers.length);
+                      
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: isFirst ? Colors.redAccent : Colors.white24, width: isFirst ? 2 : 1),
+                          boxShadow: isFirst ? [const BoxShadow(color: Colors.redAccent, blurRadius: 15)] : null,
+                        ),
+                        child: Row(
+                          children: [
+                            Text("#${i + 1}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isFirst ? Colors.redAccent : Colors.white54)),
+                            const SizedBox(width: 20),
+                            Text(player.gender == 'M' ? '♂' : '♀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: player.gender == 'M' ? Colors.blue : Colors.pink)),
+                            const SizedBox(width: 15),
+                            
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(player.name, style: TextStyle(fontSize: 22, fontWeight: isFirst ? FontWeight.bold : FontWeight.normal, color: Colors.white)),
+                                  const SizedBox(height: 4),
+                                  Text(playerTitle, style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: isFirst ? Colors.redAccent : Colors.cyanAccent)),
+                                ],
+                              )
+                            ),
+                            
+                            Text("${player.score} 🍺", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: isFirst ? Colors.redAccent : Colors.pinkAccent)),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.refresh, size: 28),
+                  label: const Text('REJOUER', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.cyanAccent, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SetupScreen()));
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+// endregion
+
+
+// ============================================================================
+// CREATE CARD SCREEN
+// Interface allowing users to inject custom challenges into the deck.
+// ============================================================================
+// region --- CREATE CARD SCREEN WIDGET ---
 class CreateCardScreen extends StatefulWidget {
   final Function(GameCard) onCardCreated;
   const CreateCardScreen({super.key, required this.onCardCreated});
@@ -639,17 +797,21 @@ class CreateCardScreen extends StatefulWidget {
 }
 
 class _CreateCardScreenState extends State<CreateCardScreen> {
+  // --- State Variables ---
   final _contentController = TextEditingController();
   String _type = 'ACTION';
   String _difficulty = 'SOFT';
 
+  // --- Build Method ---
+  
+  // Renders the input form for new custom cards
   @override
   Widget build(BuildContext context) {
     return Padding(padding: const EdgeInsets.all(20), child: Column(children: [
       TextField(controller: _contentController, decoration: const InputDecoration(labelText: 'Ton défi :', filled: true), maxLines: 2),
       const SizedBox(height: 10),
-      DropdownButtonFormField(value: _type, items: const [DropdownMenuItem(value: 'ACTION', child: Text('ACTION')), DropdownMenuItem(value: 'VERITE', child: Text('VERITE'))], onChanged: (v) => setState(() => _type = v!)),
-      DropdownButtonFormField(value: _difficulty, items: const [DropdownMenuItem(value: 'SOFT', child: Text('SOFT')), DropdownMenuItem(value: 'FUN', child: Text('FUN')), DropdownMenuItem(value: 'HOT', child: Text('HOT'))], onChanged: (v) => setState(() => _difficulty = v!)),
+      DropdownButtonFormField(initialValue: _type, items: const [DropdownMenuItem(value: 'ACTION', child: Text('ACTION')), DropdownMenuItem(value: 'VERITE', child: Text('VERITE'))], onChanged: (v) => setState(() => _type = v!)),
+      DropdownButtonFormField(initialValue: _difficulty, items: const [DropdownMenuItem(value: 'SOFT', child: Text('SOFT')), DropdownMenuItem(value: 'FUN', child: Text('FUN')), DropdownMenuItem(value: 'HOT', child: Text('HOT'))], onChanged: (v) => setState(() => _difficulty = v!)),
       const SizedBox(height: 20),
       ElevatedButton(onPressed: () { 
         if (_contentController.text.isNotEmpty) {
@@ -661,3 +823,4 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
     ]));
   }
 }
+// endregion
