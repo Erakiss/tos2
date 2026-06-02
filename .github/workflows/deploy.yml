@@ -3,7 +3,10 @@ name: Deploy Flutter Web
 on:
   push:
     branches:
-      - main  # Ou 'master' si c'est ta branche principale
+      - main
+
+permissions:
+  contents: write  
 
 jobs:
   build:
@@ -16,7 +19,7 @@ jobs:
           channel: 'stable'
           
       - run: flutter pub get
-      - run: flutter build web --release --base-href /tos2/ # Remplace /tos2/ par le nom de ton repo
+      - run: flutter build web --release --base-href /tos2/
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
